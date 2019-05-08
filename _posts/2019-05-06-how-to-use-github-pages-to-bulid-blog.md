@@ -10,7 +10,7 @@ mathjax: true
 * content
 {:toc}
 ### 理解
-1. 你得有一个项目，然后在项目的`Settings>GitHub Pages>Source`中选择你的`Github Pages`来源。![](images/github-pages-setting.png)
+1. 你得有一个项目，然后在项目的`Settings>GitHub Pages>Source`中选择你的`Github Pages`来源。![]({{site.url}}/images/github-pages-setting.png)
 2. `Github Pages`是支持`jekyll`的，在上一步中，如果你选择的是`master`分支，确保你的项目文件结构和`jekyll`项目保持一致；如果你选择的是`docs\`,确保该文件夹结构与`jekyll`一致。
 3. 完成上面两步，每次你`commit`你的代码。`Github Pages`会自动生成/更新静态页面。
 
