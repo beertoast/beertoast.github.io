@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "如何使用`Github Pages` 快速搭建博客？"
+title:  "如何使用 Github Pages 快速搭建博客？"
 date:   2019-05-06
 categories: github
 tags: jekyll github-pages
