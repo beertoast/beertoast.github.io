@@ -23,7 +23,18 @@ type: page
           {% for post in site.tags[tag] %}
             <li>
                 <time>
-                {{ post.date | date:"%F" }} {{ post.date | date: "%a" }}.
+                {{ post.date | date:"%F" }}
+                {% assign a = post.date | date: "%a" %}
+                {% assign pix = "周" %}
+                {% case a %}
+                  {% when "Mon" %}{{ pix }}一
+                  {% when "Tue" %}{{ pix }}二
+                  {% when "Wed" %}{{ pix }}三
+                  {% when "Thu" %}{{ pix }}四
+                  {% when "Fri" %}{{ pix }}五
+                  {% when "Sat" %}{{ pix }}六                  
+                  {% when "Sun" %}{{ pix }}日
+                {% endcase %}
                 </time>
                 <a class="title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
 
