@@ -13,7 +13,7 @@ mathjax: true
 ### Mac 系统
 1. 按 `command` + `,` 调出配置文件
 2. 找到 tab 相关配置项，修改即可,如下图
-![]({{site.url}}/images/github-pages-setting.png)
+![]({{site.url}}/images/change-sublime-setting.png)
 
 ### 其他系统
 在 `preferences` >  `settings` 选项
