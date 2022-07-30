@@ -1,0 +1,142 @@
+<!doctype html>
+  <html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>微信接龙 => csv</title>
+
+    <!-- Bootstrap -->
+    <!-- <link rel="stylesheet" href="css/bootstrap.css" > -->
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.cn/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.cn/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+    </head>
+    <body>
+      <h3 class="text-center">微信接龙 => csv</h3>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-md-6 col-md-push-6"> 
+            <label>预览：</label>
+            <table id="preview_table" class="table table-bordered table-hover table-condensed table-responsive">
+
+            </table>
+          </div>
+
+          <div class="col-xs-12 col-md-6 col-md-pull-6">
+            <label>接龙内容：</label>
+            <textarea class="form-control" id="editing_textarea" rows="15">
+
+            </textarea>
+            <div class="row" style="margin-top:1rem">
+
+              <div class="col-xs-12">
+                <p>
+                  <button type="button" id="auto_transfer" class="btn btn-primary">一键转换</button>
+                  
+                  <button type="button" id="reflash" class="btn btn-primary ">刷新</button>
+
+                  <button type="button" id="save_csv" class="btn btn-success ">保存</button>
+
+                </p>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <script>
+      $(function(){
+        //一键转换按钮
+        $('#auto_transfer').click(()=>{
+
+          var text = $('#editing_textarea').val();
+
+
+          //去掉序号
+          text = text.replace(/(\n\d{1,3})\. */g,"$1,");
+
+          // 替换换行
+          text = text.replaceAll(/\n\n/g,'\n');
+
+          // 替换数字中的空格
+          text = text.replace(/(\d) +(\d)/g,"$1$2")
+          // text = text.replace(/(?<=\d) +(?=\d)/g,'');
+
+          // 替换中文，号为英文逗号
+          text = text.replace(/ *， *| +/g,',');
+
+          // 中文和数字中间添加,
+          text = text.replace(/([\u4e00-\u9fa5])(\d)/g,"$1,$2");
+
+          // 身份证前添加'
+          // text = text.replace(/(?<!')(\d{11,})/g,"'$1");
+          text = text.replace(/,(\d{11,})/g,",'$1");
+
+
+          // 删去多余的，
+          text = text.replace(/,\n/g,"\n");
+
+          // 去除首尾
+          text = text.replace(/^\n+|,+$|\n+$/g,'');
+
+          $('#editing_textarea').val(text).change();
+
+        });
+
+
+
+        $('#editing_textarea').change(()=>{
+
+          $('#reflash').click();
+
+        });
+
+
+        $('#reflash').click(()=>{
+
+          var text = $('#editing_textarea').val();
+          var row_arr = text.split("\n");
+          var tmp_html = '';
+
+          row_arr.forEach((r_item)=>{
+            tmp_html += '<tr>';
+            var col_arr = r_item.split(',');
+            col_arr.forEach((c_item)=>{
+              tmp_html += '<td>'+c_item+'</td>'
+            });
+            tmp_html += '</tr>';
+          });
+
+          $('#preview_table').html('<tbody>'+ tmp_html +'</tbody>');
+          
+        });
+        
+        setInterval(()=>{
+          $('#reflash').click();
+        },1000);
+
+        $('#save_csv').click(()=>{
+          const text = $('#editing_textarea').val();
+          const blob = new Blob([text], {type: 'text/csv'});
+          const link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          const now = new Date();
+          link.download = now.getFullYear()+'-'+now.getUTCMonth()+'-'+now.getUTCDate()+' '+now.getHours()+'-'+now.getMinutes()+'-'+now.getSeconds()+'.csv';
+          link.click();
+          });
+
+      });
+    </script>
+  </body>
+  </html>
