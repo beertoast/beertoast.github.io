@@ -21,7 +21,7 @@
     </head>
     <body>
       <h3 class="text-center">微信接龙 => csv</h3>
-      <div class="container">
+      <div class="container-fluid">
         <div class="row">
           <div class="col-xs-12 col-md-6 col-md-push-6"> 
             <label>预览：</label>
@@ -30,7 +30,7 @@
             </table>
           </div>
 
-          <div class="col-xs-12 col-md-6 col-md-pull-6">
+          <div class="col-xs-12 col-md-6 col-md-pull-6" style="position: fixed;">
             <label>接龙内容：</label>
             <textarea class="form-control" id="editing_textarea" rows="15"></textarea>
             <div class="row" style="margin-top:1rem">
@@ -71,8 +71,12 @@
           text = text.replace(/(\d) +(\d)/g,"$1$2")
           // text = text.replace(/(?<=\d) +(?=\d)/g,'');
 
-          // 替换中文逗号(，)或者空格为英文逗号
-          text = text.replace(/ *， *| +/g,',');
+          // 替换中文逗号(，)或者空格或者\t为英文逗号
+          text = text.replace(/ *， *| +|\t+/g,',');
+
+          // 删去多余的，
+          text = text.replace(/,\n/g,"\n");
+
 
           // 中文和数字中间添加,
           text = text.replace(/([\u4e00-\u9fa5])(\d{10,})/g,"$1,$2");
@@ -80,7 +84,7 @@
 
           // 身份证或开户行信息单独一行的
           text = text.replace(/,*\n(\d{10,})/g,",$1");
-          text = text.replace(/,*\n([\u4e00-\u9fa5]{2,})/g,",$1");
+          text = text.replace(/,*\n([\u4e00-\u9fa5]{5,})/g,",$1");
 
           // 身份证前添加'
           // text = text.replace(/(?<!')(\d{11,})/g,"'$1");
@@ -88,7 +92,7 @@
 
          
           // 删去多余的，
-          text = text.replace(/,\n/g,"\n");
+          // text = text.replace(/,\n/g,"\n");
 
           // 去除首尾
           text = text.replace(/^\n+|,+$|\n+$/g,'');
