@@ -75,15 +75,14 @@
                 var text = $('#editing_textarea').val();
 
                 // 去掉,.和空白字符为,
-                // text = text.replace(/(\.|,|，|\s)+/g,',');
+                //text = text.replace(/\n/g,' \n');
                 // 保留数字、字母、中文、换行
                 text = text.match(/([0-9]|[A-z]|[\u4e00-\u9fa5]|\n)+/g).join(',');
                 
-                //去除末尾多余的,号
-                text = text.replaceAll(/,\n/g, '\n');
+                
                 
                 // 替换换行
-                text = text.replaceAll(/\n{2,}/g, '\n');
+                text = text.replaceAll(/,*\n+,*/g, '\n');
 
                 // 中文和数字中间添加,
                 text = text.replace(/([\u4e00-\u9fa5])(\d{10,})/g, "$1,$2");
@@ -92,8 +91,11 @@
                 // 身份证前添加'
                 // text = text.replace(/(?<!')(\d{11,})/g,"'$1");
                 text = text.replace(/(\n|,)(\d{11,})/g, "$1'$2");
+                text = text.replace(/^(\d{11,})/g, "'$1");
 
 
+                // //去除末尾多余的,号
+                // text = text.replaceAll(/,*\n,*/g, '\n');
                 $('#editing_textarea').val(text).change();
 
             });
