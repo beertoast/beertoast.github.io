@@ -91,7 +91,7 @@
 
                 // 身份证前添加'
                 // text = text.replace(/(?<!')(\d{11,})/g,"'$1");
-                text = text.replace(/,(\d{11,})/g, ",'$1");
+                text = text.replace(/(\n|,)(\d{11,})/g, "$1'$2");
 
 
                 $('#editing_textarea').val(text).change();
