@@ -82,7 +82,7 @@
                 
                 
                 // 替换换行
-                text = text.replaceAll(/,*\n+,*/g, '\n');
+                text = text.replace(/,*\n+,*/g, '\n');
 
                 // 中文和数字中间添加,
                 text = text.replace(/([\u4e00-\u9fa5])(\d{10,})/g, "$1,$2");
